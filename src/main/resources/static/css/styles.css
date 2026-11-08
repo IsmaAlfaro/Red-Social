@@ -232,4 +232,9 @@ article p { line-height: 1.5; }
 .conversation-messages .message-other { justify-self: start; color: var(--ink); background: var(--paper); border-radius: 18px 18px 18px 4px; }
 .conversation-list .chat-match-button { color: var(--paper); background: rgba(201, 194, 227, 0.16); border: 1px solid rgba(201, 194, 227, 0.25); }
 .conversation-list .chat-match-button:hover { background: var(--violet); }
+.conversation-view .chat-form { align-items: center; gap: 10px; margin-top: 18px; padding: 7px; background: var(--paper); border: 1px solid var(--rose); border-radius: 18px; box-shadow: 0 8px 18px rgba(14, 11, 29, 0.12); }
+.conversation-view .chat-form input { padding: 11px 12px; color: var(--ink); background: transparent; border: 0; outline: 0; }
+.conversation-view .chat-form input::placeholder { color: var(--plum); opacity: 0.72; }
+.conversation-view .chat-form button { padding: 11px 18px; background: var(--violet); border-radius: 13px; transition: background 0.2s ease; }
+.conversation-view .chat-form button:hover { background: var(--plum); }
 @media (max-width: 700px) { .messages-layout { grid-template-columns: 1fr; } .conversation-list { min-height: 180px; } }

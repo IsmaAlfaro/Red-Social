@@ -129,6 +129,27 @@ document.getElementById("profile-image-input").addEventListener("change", functi
     }
     preview.src = URL.createObjectURL(image);
     preview.classList.remove("hidden");
+    document.getElementById("register-photo-placeholder").classList.add("hidden");
+});
+document.getElementById("register-add-interest").addEventListener("click", async function () {
+    var name = document.getElementById("register-interest-name").value.trim();
+    if (!name) { return; }
+    var response = await fetch("/api/interests", { method: "POST", headers: { "Content-Type": "application/json", "X-XSRF-TOKEN": readCookie("XSRF-TOKEN") }, body: JSON.stringify({ name: name, type: document.getElementById("register-interest-type").value }) });
+    if (!response.ok) { return; }
+    var interest = await response.json();
+    var label = document.createElement("label");
+    label.className = "interest-option";
+    var input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "interestIds";
+    input.value = interest.id;
+    input.checked = true;
+    label.appendChild(input);
+    var text = document.createElement("span");
+    text.textContent = interest.name;
+    label.appendChild(text);
+    document.getElementById("interest-list").appendChild(label);
+    document.getElementById("register-interest-name").value = "";
 });
 loadCsrfToken();
 loadInterests();

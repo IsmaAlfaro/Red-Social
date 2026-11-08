@@ -49,7 +49,7 @@ h1 {
     margin-top: 20px;
     padding: 15px 22px;
     color: var(--paper);
-    background: var(--accent);
+    background: #3e0d17;
     border-radius: 999px;
     font-weight: bold;
     text-decoration: none;
@@ -219,6 +219,10 @@ article p { line-height: 1.5; }
 .open-chat-button { display: block; margin: 14px auto 0; }
 .message-bubble { position: fixed; right: 26px; bottom: 26px; z-index: 1; display: grid; width: 64px; height: 52px; place-items: center; color: var(--paper); background: var(--accent); border-radius: 24px; box-shadow: 0 8px 22px rgba(255, 107, 107, 0.38); font-family: Georgia, serif; font-size: 1.4rem; font-weight: bold; letter-spacing: 0.13em; text-decoration: none; }
 .message-bubble::after { position: absolute; right: 9px; bottom: -8px; width: 18px; height: 18px; background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 100%); content: ""; }
+.match-reaction { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 24px; background: rgba(90, 22, 36, 0.72); }
+.match-reaction > div { max-width: 420px; padding: 42px; color: var(--ink); background: var(--paper); border-radius: 28px; text-align: center; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35); }
+.match-reaction h2 { margin: 12px 0; font-family: Georgia, serif; font-size: 3rem; }
+.match-reaction button { display: block; margin: 20px auto 0; color: var(--ink); background: none; border: 0; cursor: pointer; font: inherit; text-decoration: underline; }
 .chat-match-button { padding: 11px; color: var(--ink); background: #fff; border: 0; border-radius: 10px; cursor: pointer; text-align: left; }
 .empty-chat { color: var(--plum); }
 .messages-page { min-height: 100vh; padding: 28px max(7vw, 28px); background: var(--ink); }
@@ -236,6 +240,7 @@ article p { line-height: 1.5; }
 .conversation-list .chat-match-button:hover { background: var(--violet); }
 .contact-avatar { width: 32px; height: 32px; object-fit: cover; border-radius: 50%; }
 .contact-initial { display: grid; flex: 0 0 auto; place-items: center; color: var(--ink); background: var(--paper); font-family: Georgia, serif; font-weight: bold; }
+.hide-contact { justify-self: start; margin: -5px 0 8px 8px; padding: 0; color: var(--paper); background: none; border: 0; cursor: pointer; font-size: 0.75rem; text-decoration: underline; }
 .conversation-view .chat-form { align-items: center; gap: 10px; margin-top: 18px; padding: 7px; background: var(--paper); border: 1px solid var(--rose); border-radius: 18px; box-shadow: 0 8px 18px rgba(14, 11, 29, 0.12); }
 .conversation-view .chat-form input { padding: 11px 12px; color: var(--ink); background: transparent; border: 0; outline: 0; }
 .conversation-view .chat-form input::placeholder { color: var(--plum); opacity: 0.72; }

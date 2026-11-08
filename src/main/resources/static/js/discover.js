@@ -108,8 +108,11 @@ async function sendLike(profileId, button, card) {
         button.innerHTML = result.mutual ? "&hearts;" : "&#10003;";
         if (result.mutual) {
             card.classList.add("mutual-match");
+            document.getElementById("match-reaction-text").textContent = "Tu y " + card.querySelector("h2").textContent + " tienen interes mutuo.";
+            document.getElementById("match-reaction").classList.remove("hidden");
+        } else {
+            setTimeout(loadDiscover, 350);
         }
-        setTimeout(loadDiscover, 350);
     } catch (error) {
         button.disabled = false;
         button.textContent = "Intentar de nuevo";
@@ -158,6 +161,10 @@ document.getElementById("logout-button").addEventListener("click", async functio
     } catch (error) {
         window.location.assign("/access");
     }
+});
+document.getElementById("close-match-reaction").addEventListener("click", function () {
+    document.getElementById("match-reaction").classList.add("hidden");
+    loadDiscover();
 });
 
 loadDiscover();

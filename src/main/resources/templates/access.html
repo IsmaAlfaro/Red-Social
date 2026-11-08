@@ -26,13 +26,13 @@
             <label>Correo universitario<input name="email" type="email" required></label>
             <label>Contrasena<input name="password" type="password" minlength="8" required></label>
             <label>Carrera<input name="degree" required></label>
-            <label>Foto de perfil<input id="profile-image-input" name="profileImageFile" type="file" accept="image/png, image/jpeg"></label>
-            <img id="profile-image-preview" class="profile-image-preview hidden" alt="Vista previa de tu foto de perfil">
+            <div class="profile-photo-editor register-photo"><img id="profile-image-preview" class="profile-photo-preview hidden" alt="Vista previa de tu foto de perfil"><span id="register-photo-placeholder" class="profile-photo-placeholder">+</span><label class="profile-photo-action" for="profile-image-input">Agregar foto</label><input id="profile-image-input" name="profileImageFile" type="file" accept="image/png, image/jpeg" class="hidden"></div>
             <label>Bio<textarea name="bio" maxlength="280" placeholder="Cuentanos que buscas en UniMatch"></textarea></label>
             <fieldset class="interest-picker">
                 <legend>Elige al menos un gusto</legend>
                 <div id="interest-list" class="interest-list">Cargando intereses...</div>
             </fieldset>
+            <div class="custom-interest"><strong>Agrega un gusto propio</strong><input id="register-interest-name" placeholder="Pelicula, artista o genero"><select id="register-interest-type"><option value="MOVIE">Pelicula</option><option value="ARTIST">Artista</option><option value="MUSIC_GENRE">Genero musical</option><option value="MOVIE_GENRE">Genero de cine</option><option value="SERIES">Serie</option></select><button id="register-add-interest" type="button">Agregar</button></div>
             <button class="button" type="submit">Crear cuenta</button>
         </form>
         <p id="auth-message" class="auth-message" aria-live="polite"></p>

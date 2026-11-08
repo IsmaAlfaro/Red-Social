@@ -1,6 +1,10 @@
 package com.unimatch.web;
 
+import com.unimatch.domain.StudentProfile;
 import com.unimatch.repository.StudentProfileRepository;
+import com.unimatch.repository.ProfileRejectionRepository;
+import com.unimatch.security.AccountService;
+import org.springframework.security.core.Authentication;
 import java.util.List;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -16,9 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
 
     private final StudentProfileRepository profileRepository;
+    private final AccountService accountService;
+    private final ProfileRejectionRepository rejectionRepository;
 
-    public ProfileController(StudentProfileRepository profileRepository) {
+    public ProfileController(StudentProfileRepository profileRepository, AccountService accountService,
+                             ProfileRejectionRepository rejectionRepository) {
         this.profileRepository = profileRepository;
+        this.accountService = accountService;
+        this.rejectionRepository = rejectionRepository;
     }
 
     @GetMapping
@@ -38,12 +47,23 @@ public class ProfileController {
     @GetMapping("/{id}/matches")
     public List<MatchResponse> matches(@PathVariable Long id) {
         return profileRepository.findById(id)
-                .map(profile -> profileRepository.findAll().stream()
-                        .filter(candidate -> !candidate.getId().equals(profile.getId()))
-                        .map(candidate -> MatchResponse.from(profile, candidate))
-                        .sorted(Comparator.comparingInt(MatchResponse::getCompatibility).reversed())
-                        .collect(Collectors.toList()))
+                .map(this::matchesFor)
                 .orElseThrow(ProfileNotFoundException::new);
+    }
+
+    @GetMapping("/matches")
+    public List<MatchResponse> myMatches(Authentication authentication) {
+        return matchesFor(accountService.currentProfile(authentication.getName()));
+    }
+
+    private List<MatchResponse> matchesFor(StudentProfile profile) {
+        return profileRepository.findAll().stream()
+                .filter(candidate -> !candidate.getId().equals(profile.getId()))
+                .filter(candidate -> !rejectionRepository.existsBySourceProfileIdAndTargetProfileId(
+                        profile.getId(), candidate.getId()))
+                .map(candidate -> MatchResponse.from(profile, candidate))
+                .sorted(Comparator.comparingInt(MatchResponse::getCompatibility).reversed())
+                .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

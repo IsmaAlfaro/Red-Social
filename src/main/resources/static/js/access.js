@@ -15,6 +15,9 @@ async function submitForm(event, path) {
     var fields = new FormData(form);
     var payload = {};
     fields.forEach(function (value, key) {
+        if (key === "profileImageFile") {
+            return;
+        }
         if (key === "interestIds") {
             payload.interestIds = payload.interestIds || [];
             payload.interestIds.push(Number(value));
@@ -23,6 +26,20 @@ async function submitForm(event, path) {
         payload[key] = value;
     });
     var message = document.getElementById("auth-message");
+
+    var image = form.elements.profileImageFile.files[0];
+    if (image) {
+        if (image.size > 2000000) {
+            message.textContent = "La foto debe pesar menos de 2 MB.";
+            return;
+        }
+        payload.profileImage = await new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () { resolve(reader.result); };
+            reader.onerror = reject;
+            reader.readAsDataURL(image);
+        });
+    }
 
     if (path === "/api/auth/register" && !payload.interestIds) {
         message.textContent = "Elige al menos un gusto para crear tu perfil.";
@@ -101,6 +118,16 @@ document.getElementById("login-form").addEventListener("submit", function (event
 });
 document.getElementById("register-form").addEventListener("submit", function (event) {
     submitForm(event, "/api/auth/register");
+});
+document.getElementById("profile-image-input").addEventListener("change", function (event) {
+    var image = event.target.files[0];
+    var preview = document.getElementById("profile-image-preview");
+    if (!image) {
+        preview.classList.add("hidden");
+        return;
+    }
+    preview.src = URL.createObjectURL(image);
+    preview.classList.remove("hidden");
 });
 loadCsrfToken();
 loadInterests();

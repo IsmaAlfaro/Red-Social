@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -30,6 +31,9 @@ public class StudentProfile {
     private String degree;
 
     private String bio;
+
+    @Lob
+    private String profileImage;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -53,6 +57,10 @@ public class StudentProfile {
         interests.add(interest);
     }
 
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,6 +79,10 @@ public class StudentProfile {
 
     public String getBio() {
         return bio;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
     }
 
     public Set<Interest> getInterests() {

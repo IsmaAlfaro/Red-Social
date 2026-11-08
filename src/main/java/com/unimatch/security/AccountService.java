@@ -42,6 +42,7 @@ public class AccountService {
         StudentProfile profile = new StudentProfile(
                 request.getName().trim(), email, request.getDegree().trim(), request.getBio()
         );
+        profile.setProfileImage(request.getProfileImage());
         Set<Long> interestIds = new HashSet<Long>(request.getInterestIds());
         List<Interest> interests = interestRepository.findAllById(interestIds);
         if (interests.size() != interestIds.size()) {
@@ -55,8 +56,17 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AuthResponse responseFor(String email) {
-        UserAccount account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        UserAccount account = accountFor(email);
         return new AuthResponse(ProfileResponse.from(account.getProfile()));
+    }
+
+    @Transactional(readOnly = true)
+    public StudentProfile currentProfile(String email) {
+        return accountFor(email).getProfile();
+    }
+
+    private UserAccount accountFor(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 }

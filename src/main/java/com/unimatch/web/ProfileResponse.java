@@ -12,6 +12,7 @@ public class ProfileResponse {
     private final String name;
     private final String degree;
     private final String bio;
+    private final String profileImage;
     private final List<InterestResponse> interests;
 
     private ProfileResponse(StudentProfile profile) {
@@ -19,6 +20,7 @@ public class ProfileResponse {
         this.name = profile.getName();
         this.degree = profile.getDegree();
         this.bio = profile.getBio();
+        this.profileImage = profile.getProfileImage();
         this.interests = profile.getInterests().stream()
                 .map(InterestResponse::new)
                 .collect(Collectors.toList());
@@ -42,6 +44,10 @@ public class ProfileResponse {
 
     public String getBio() {
         return bio;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
     }
 
     public List<InterestResponse> getInterests() {

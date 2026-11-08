@@ -10,13 +10,18 @@
 <main class="discover-page">
     <header class="discover-header">
         <a class="brand" href="/">UniMatch</a>
+        <div class="current-user">
+            <img id="current-user-image" class="current-user-image hidden" alt="Tu foto de perfil">
+            <span id="current-user-initial" class="current-user-initial">?</span>
+            <span id="current-user-name">Mi perfil</span>
+        </div>
         <button id="logout-button" class="text-button" type="button">Cerrar sesion</button>
     </header>
-    <section class="discover-intro">
-        <p class="eyebrow">TU CIRCULO CULTURAL</p>
-        <h1 id="welcome-title">Buscando conexiones...</h1>
-        <p>Perfiles ordenados por los gustos que tienen en comun contigo.</p>
-    </section>
+    <aside id="chat-panel" class="chat-panel hidden">
+        <div class="chat-heading"><strong id="chat-name">Match</strong><button id="close-chat" type="button">Cerrar</button></div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <form id="chat-form" class="chat-form"><input id="chat-input" maxlength="500" placeholder="Escribe un mensaje" required><button type="submit">Enviar</button></form>
+    </aside>
     <section id="match-list" class="match-list" aria-live="polite"></section>
 </main>
 <script src="/js/discover.js"></script>

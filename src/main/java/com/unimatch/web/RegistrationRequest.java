@@ -26,6 +26,9 @@ public class RegistrationRequest {
     @Size(max = 280)
     private String bio;
 
+    @Size(max = 2800000)
+    private String profileImage;
+
     @NotEmpty
     private List<Long> interestIds = new ArrayList<Long>();
 
@@ -39,6 +42,8 @@ public class RegistrationRequest {
     public void setDegree(String degree) { this.degree = degree; }
     public String getBio() { return bio; }
     public void setBio(String bio) { this.bio = bio; }
+    public String getProfileImage() { return profileImage; }
+    public void setProfileImage(String profileImage) { this.profileImage = profileImage; }
     public List<Long> getInterestIds() { return interestIds; }
     public void setInterestIds(List<Long> interestIds) { this.interestIds = interestIds; }
 }

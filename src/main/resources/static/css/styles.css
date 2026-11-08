@@ -124,6 +124,7 @@ article p { line-height: 1.5; }
 .auth-form label { display: grid; gap: 7px; font-weight: bold; }
 .auth-form input, .auth-form textarea { padding: 11px; border: 1px solid var(--ink); font: inherit; }
 .auth-form textarea { min-height: 80px; resize: vertical; }
+.profile-image-preview { width: 112px; height: 112px; object-fit: cover; border-radius: 50%; border: 3px solid var(--rose); }
 .auth-form .button { width: fit-content; border: 0; cursor: pointer; }
 .interest-picker { margin: 4px 0; padding: 0; border: 0; }
 .interest-picker legend { margin-bottom: 10px; font-weight: bold; }
@@ -146,7 +147,7 @@ article p { line-height: 1.5; }
 .discover-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 22px;
 }
 
 .brand {
@@ -157,6 +158,7 @@ article p { line-height: 1.5; }
 }
 
 .text-button {
+    margin-left: auto;
     padding: 8px 0;
     color: var(--paper);
     background: none;
@@ -166,28 +168,49 @@ article p { line-height: 1.5; }
     font: inherit;
 }
 
-.discover-intro { max-width: 700px; margin: 11vh 0 48px; }
-.discover-intro h1 { margin-bottom: 14px; }
-.discover-intro > p:last-child { color: var(--paper); font-size: 1.15rem; }
+.current-user { display: flex; align-items: center; gap: 9px; color: var(--paper); font-weight: bold; }
+.current-user-image, .current-user-initial { width: 38px; height: 38px; border-radius: 50%; }
+.current-user-image { object-fit: cover; }
+.current-user-initial { display: grid; place-items: center; background: var(--rose); }
 
-.match-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
-}
+.match-list { max-width: 460px; margin: 8vh auto 0; }
 
 .match-card {
-    min-height: 230px;
-    padding: 26px;
+    min-height: 470px;
+    padding: 34px;
     color: var(--ink);
     background: var(--paper);
     border: 0;
-    border-radius: 20px;
+    border-radius: 30px;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.28);
+    text-align: center;
 }
 
-.match-card h2 { margin: 0 0 5px; font-family: Georgia, serif; font-size: 1.8rem; }
+.match-card h2 { margin: 17px 0 5px; font-family: Georgia, serif; font-size: 2.25rem; }
+.candidate-image, .candidate-placeholder { width: 170px; height: 170px; object-fit: cover; border-radius: 50%; }
+.candidate-image { display: block; margin: 0 auto; border: 5px solid var(--rose); }
+.candidate-placeholder { display: grid; place-items: center; margin: 0 auto; color: var(--paper); background: linear-gradient(135deg, var(--violet), var(--rose)); font-family: Georgia, serif; font-size: 4rem; }
 .match-card p { margin: 10px 0; }
 .degree { color: var(--plum); }
 .compatibility { color: var(--rose); font-size: 1.25rem; font-weight: bold; }
-.shared { margin-top: 28px !important; line-height: 1.45; }
+.interests { color: var(--plum); line-height: 1.5; }
+.shared { margin-top: 20px !important; line-height: 1.45; }
+.match-actions { display: flex; justify-content: center; gap: 18px; margin-top: 28px; }
+.like-button, .reject-button { width: 58px; height: 58px; padding: 0; border-radius: 50%; cursor: pointer; font-family: Arial, Helvetica, sans-serif; font-size: 2rem; line-height: 1; }
+.like-button { color: var(--paper); background: var(--accent); border: 0; box-shadow: 0 7px 18px rgba(255, 107, 107, 0.35); }
+.reject-button { color: var(--plum); background: transparent; border: 2px solid var(--plum); }
+.like-button:hover, .reject-button:hover { transform: translateY(-2px); }
+.like-button:disabled { cursor: default; opacity: 0.75; }
+.mutual-match { box-shadow: 0 0 0 3px var(--accent); }
 .empty-state { color: var(--paper); }
+.chat-panel { position: fixed; right: 24px; bottom: 24px; z-index: 2; width: min(360px, calc(100vw - 48px)); padding: 18px; color: var(--ink); background: var(--paper); border-radius: 20px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35); }
+.chat-heading { display: flex; justify-content: space-between; align-items: center; }
+.chat-heading button { border: 0; background: none; color: var(--plum); cursor: pointer; }
+.chat-messages { display: grid; gap: 8px; min-height: 120px; max-height: 260px; margin: 16px 0; overflow-y: auto; }
+.chat-messages p { max-width: 80%; margin: 0; padding: 9px 11px; border-radius: 13px; line-height: 1.35; }
+.message-own { justify-self: end; color: var(--paper); background: var(--violet); }
+.message-other { justify-self: start; background: #fff; }
+.chat-form { display: flex; gap: 8px; }
+.chat-form input { min-width: 0; flex: 1; padding: 9px; border: 1px solid var(--plum); }
+.chat-form button, .open-chat-button { padding: 9px 12px; color: var(--paper); background: var(--plum); border: 0; border-radius: 999px; cursor: pointer; }
+.open-chat-button { display: block; margin: 14px auto 0; }

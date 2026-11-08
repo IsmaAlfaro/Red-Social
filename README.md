@@ -28,6 +28,8 @@ Abre `http://localhost:8080/access` para crear una cuenta o iniciar sesion.
 - `GET /api/profiles`: devuelve los perfiles de ejemplo y sus intereses.
 - `GET /api/profiles/{id}`: devuelve un perfil por identificador.
 - `GET /api/profiles/{id}/matches`: devuelve otros perfiles ordenados por afinidad.
+- `GET /api/profiles/matches`: devuelve afinidades para la cuenta autenticada.
+- `POST /api/likes/{profileId}`: registra un like y comunica si es mutuo.
 - `POST /api/auth/register`: crea una cuenta y su perfil.
 - `POST /api/auth/login`: inicia sesion y conserva una sesion segura en el navegador.
 - `POST /api/auth/logout`: cierra la sesion actual.

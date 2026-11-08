@@ -61,6 +61,14 @@ public class StudentProfile {
         this.profileImage = profileImage;
     }
 
+    public void update(String name, String degree, String bio, Set<Interest> interests) {
+        this.name = name;
+        this.degree = degree;
+        this.bio = bio;
+        this.interests.clear();
+        this.interests.addAll(interests);
+    }
+
     public Long getId() {
         return id;
     }

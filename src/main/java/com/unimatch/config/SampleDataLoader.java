@@ -23,15 +23,22 @@ public class SampleDataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
+        Interest rock = interest("Rock alternativo", InterestType.MUSIC);
+        Interest pop = interest("Pop", InterestType.MUSIC);
+        Interest interstellar = interest("Interstellar", InterestType.MOVIE);
+        Interest parasite = interest("Parasite", InterestType.MOVIE);
+        Interest dark = interest("Dark", InterestType.SERIES);
+        interest("Arctic Monkeys", InterestType.ARTIST);
+        interest("Taylor Swift", InterestType.ARTIST);
+        interest("Bad Bunny", InterestType.ARTIST);
+        interest("Hip hop", InterestType.MUSIC_GENRE);
+        interest("Reggaeton", InterestType.MUSIC_GENRE);
+        interest("Ciencia ficcion", InterestType.MOVIE_GENRE);
+        interest("Terror", InterestType.MOVIE_GENRE);
+
         if (profileRepository.count() > 0) {
             return;
         }
-
-        Interest rock = interestRepository.save(new Interest("Rock alternativo", InterestType.MUSIC));
-        Interest pop = interestRepository.save(new Interest("Pop", InterestType.MUSIC));
-        Interest interstellar = interestRepository.save(new Interest("Interstellar", InterestType.MOVIE));
-        Interest parasite = interestRepository.save(new Interest("Parasite", InterestType.MOVIE));
-        Interest dark = interestRepository.save(new Interest("Dark", InterestType.SERIES));
 
         StudentProfile camila = new StudentProfile(
                 "Camila Torres", "camila.torres@universidad.edu", "Ingenieria de Sistemas",
@@ -51,5 +58,10 @@ public class SampleDataLoader implements CommandLineRunner {
 
         profileRepository.save(camila);
         profileRepository.save(mateo);
+    }
+
+    private Interest interest(String name, InterestType type) {
+        return interestRepository.findByName(name)
+                .orElseGet(() -> interestRepository.save(new Interest(name, type)));
     }
 }

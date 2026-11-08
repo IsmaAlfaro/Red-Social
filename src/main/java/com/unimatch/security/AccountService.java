@@ -8,6 +8,7 @@ import com.unimatch.repository.UserAccountRepository;
 import com.unimatch.web.AuthResponse;
 import com.unimatch.web.ProfileResponse;
 import com.unimatch.web.RegistrationRequest;
+import com.unimatch.web.ProfileUpdateRequest;
 import java.util.Locale;
 import java.util.HashSet;
 import java.util.List;
@@ -63,6 +64,21 @@ public class AccountService {
     @Transactional(readOnly = true)
     public StudentProfile currentProfile(String email) {
         return accountFor(email).getProfile();
+    }
+
+    @Transactional
+    public AuthResponse updateProfile(String email, ProfileUpdateRequest request) {
+        StudentProfile profile = accountFor(email).getProfile();
+        Set<Long> ids = new HashSet<Long>(request.getInterestIds());
+        List<Interest> interests = interestRepository.findAllById(ids);
+        if (interests.size() != ids.size()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Hay intereses no validos");
+        }
+        profile.update(request.getName().trim(), request.getDegree().trim(), request.getBio(), new HashSet<Interest>(interests));
+        if (request.getProfileImage() != null) {
+            profile.setProfileImage(request.getProfileImage());
+        }
+        return new AuthResponse(ProfileResponse.from(profile));
     }
 
     private UserAccount accountFor(String email) {

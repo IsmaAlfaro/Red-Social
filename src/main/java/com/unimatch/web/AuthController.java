@@ -15,6 +15,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -61,6 +62,11 @@ public class AuthController {
     @GetMapping("/me")
     public AuthResponse me(Authentication authentication) {
         return accountService.responseFor(authentication.getName());
+    }
+
+    @PutMapping("/me")
+    public AuthResponse updateProfile(Authentication authentication, @Valid @RequestBody ProfileUpdateRequest request) {
+        return accountService.updateProfile(authentication.getName(), request);
     }
 
     private Authentication authenticateAndSave(String email, String password,

@@ -25,4 +25,14 @@ public class HomeController {
     public String messages() {
         return "messages";
     }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
+    }
+
+    @GetMapping("/profile-view")
+    public String profileView() {
+        return "profile-view";
+    }
 }

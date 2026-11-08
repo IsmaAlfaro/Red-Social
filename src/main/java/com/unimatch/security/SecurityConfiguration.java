@@ -2,6 +2,7 @@ package com.unimatch.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,8 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .securityContextRepository(securityContextRepository())
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/interests")
+                .permitAll()
                 .antMatchers("/", "/access", "/css/**", "/js/**", "/api/health",
-                        "/api/interests", "/api/auth/csrf", "/api/auth/register", "/api/auth/login")
+                        "/api/auth/csrf", "/api/auth/register", "/api/auth/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -60,7 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, exception) -> {
-                    if ("/discover".equals(request.getRequestURI()) || "/messages".equals(request.getRequestURI())) {
+                    if ("/discover".equals(request.getRequestURI()) || "/messages".equals(request.getRequestURI())
+                            || "/profile".equals(request.getRequestURI()) || "/profile-view".equals(request.getRequestURI())) {
                         response.sendRedirect("/access");
                         return;
                     }

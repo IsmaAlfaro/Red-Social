@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, exception) -> {
-                    if ("/discover".equals(request.getRequestURI())) {
+                    if ("/discover".equals(request.getRequestURI()) || "/messages".equals(request.getRequestURI())) {
                         response.sendRedirect("/access");
                         return;
                     }

@@ -20,4 +20,9 @@ public class HomeController {
     public String discover() {
         return "discover";
     }
+
+    @GetMapping("/messages")
+    public String messages() {
+        return "messages";
+    }
 }

@@ -17,11 +17,7 @@
         </div>
         <button id="logout-button" class="text-button" type="button">Cerrar sesion</button>
     </header>
-    <aside id="chat-panel" class="chat-panel hidden">
-        <div class="chat-heading"><strong id="chat-name">Match</strong><button id="close-chat" type="button">Cerrar</button></div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <form id="chat-form" class="chat-form"><input id="chat-input" maxlength="500" placeholder="Escribe un mensaje" required><button type="submit">Enviar</button></form>
-    </aside>
+    <a class="message-bubble" href="/messages" aria-label="Abrir mensajes" title="Mensajes"><span>...</span></a>
     <section id="match-list" class="match-list" aria-live="polite"></section>
 </main>
 <script src="/js/discover.js"></script>

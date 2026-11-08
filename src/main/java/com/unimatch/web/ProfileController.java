@@ -3,6 +3,7 @@ package com.unimatch.web;
 import com.unimatch.domain.StudentProfile;
 import com.unimatch.repository.StudentProfileRepository;
 import com.unimatch.repository.ProfileRejectionRepository;
+import com.unimatch.repository.ProfileLikeRepository;
 import com.unimatch.security.AccountService;
 import org.springframework.security.core.Authentication;
 import java.util.List;
@@ -22,12 +23,14 @@ public class ProfileController {
     private final StudentProfileRepository profileRepository;
     private final AccountService accountService;
     private final ProfileRejectionRepository rejectionRepository;
+    private final ProfileLikeRepository likeRepository;
 
     public ProfileController(StudentProfileRepository profileRepository, AccountService accountService,
-                             ProfileRejectionRepository rejectionRepository) {
+                             ProfileRejectionRepository rejectionRepository, ProfileLikeRepository likeRepository) {
         this.profileRepository = profileRepository;
         this.accountService = accountService;
         this.rejectionRepository = rejectionRepository;
+        this.likeRepository = likeRepository;
     }
 
     @GetMapping
@@ -60,6 +63,8 @@ public class ProfileController {
         return profileRepository.findAll().stream()
                 .filter(candidate -> !candidate.getId().equals(profile.getId()))
                 .filter(candidate -> !rejectionRepository.existsBySourceProfileIdAndTargetProfileId(
+                        profile.getId(), candidate.getId()))
+                .filter(candidate -> !likeRepository.existsBySourceProfileIdAndTargetProfileId(
                         profile.getId(), candidate.getId()))
                 .map(candidate -> MatchResponse.from(profile, candidate))
                 .sorted(Comparator.comparingInt(MatchResponse::getCompatibility).reversed())

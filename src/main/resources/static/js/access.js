@@ -27,7 +27,8 @@ async function submitForm(event, path) {
     });
     var message = document.getElementById("auth-message");
 
-    var image = form.elements.profileImageFile.files[0];
+    var imageInput = form.elements.profileImageFile;
+    var image = imageInput ? imageInput.files[0] : null;
     if (image) {
         if (image.size > 2000000) {
             message.textContent = "La foto debe pesar menos de 2 MB.";

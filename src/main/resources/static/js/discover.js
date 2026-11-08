@@ -24,27 +24,6 @@ function addText(element, className, text) {
     element.appendChild(child);
 }
 
-var chatProfileId = null;
-var currentProfileId = null;
-
-function renderChat(messages) {
-    var list = document.getElementById("chat-messages");
-    list.textContent = "";
-    messages.forEach(function (message) {
-        var bubble = document.createElement("p");
-        bubble.className = message.senderId === currentProfileId ? "message-own" : "message-other";
-        bubble.textContent = message.content;
-        list.appendChild(bubble);
-    });
-}
-
-async function openChat(profileId, name) {
-    chatProfileId = profileId;
-    document.getElementById("chat-name").textContent = name;
-    document.getElementById("chat-panel").classList.remove("hidden");
-    renderChat(await api("/api/messages/" + profileId));
-}
-
 function renderMatches(matches) {
     var list = document.getElementById("match-list");
     list.textContent = "";
@@ -96,10 +75,27 @@ function renderMatches(matches) {
     rejectButton.addEventListener("click", function () { sendRejection(match.profile.id); });
     var actions = document.createElement("div");
     actions.className = "match-actions";
-    actions.appendChild(rejectButton);
     actions.appendChild(likeButton);
+    actions.appendChild(rejectButton);
     card.appendChild(actions);
     list.appendChild(card);
+    attachSwipe(card, match.profile.id, likeButton);
+}
+
+function attachSwipe(card, profileId, likeButton) {
+    var startX = null;
+    card.addEventListener("pointerdown", function (event) { startX = event.clientX; });
+    card.addEventListener("pointerup", function (event) {
+        if (startX === null) { return; }
+        var distance = event.clientX - startX;
+        startX = null;
+        if (Math.abs(distance) < 80) { return; }
+        if (distance < 0) {
+            sendLike(profileId, likeButton, card);
+        } else {
+            sendRejection(profileId);
+        }
+    });
 }
 
 async function sendLike(profileId, button, card) {
@@ -112,13 +108,8 @@ async function sendLike(profileId, button, card) {
         button.innerHTML = result.mutual ? "&hearts;" : "&#10003;";
         if (result.mutual) {
             card.classList.add("mutual-match");
-            var chatButton = document.createElement("button");
-            chatButton.className = "open-chat-button";
-            chatButton.type = "button";
-            chatButton.textContent = "Abrir chat";
-            chatButton.addEventListener("click", function () { openChat(profileId, card.querySelector("h2").textContent); });
-            card.appendChild(chatButton);
         }
+        setTimeout(loadDiscover, 350);
     } catch (error) {
         button.disabled = false;
         button.textContent = "Intentar de nuevo";
@@ -140,7 +131,6 @@ async function sendRejection(profileId) {
 async function loadDiscover() {
     try {
         var me = await api("/api/auth/me");
-        currentProfileId = me.profile.id;
         document.getElementById("current-user-name").textContent = me.profile.name;
         document.getElementById("current-user-initial").textContent = me.profile.name.charAt(0).toUpperCase();
         if (me.profile.profileImage) {
@@ -168,25 +158,6 @@ document.getElementById("logout-button").addEventListener("click", async functio
     } catch (error) {
         window.location.assign("/access");
     }
-});
-
-document.getElementById("close-chat").addEventListener("click", function () {
-    document.getElementById("chat-panel").classList.add("hidden");
-});
-document.getElementById("chat-form").addEventListener("submit", async function (event) {
-    event.preventDefault();
-    var input = document.getElementById("chat-input");
-    var message = await api("/api/messages/" + chatProfileId, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-XSRF-TOKEN": csrfHeader() },
-        body: JSON.stringify({ content: input.value })
-    });
-    var current = document.getElementById("chat-messages");
-    var bubble = document.createElement("p");
-    bubble.className = "message-own";
-    bubble.textContent = message.content;
-    current.appendChild(bubble);
-    input.value = "";
 });
 
 loadDiscover();

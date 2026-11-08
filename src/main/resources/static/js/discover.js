@@ -144,10 +144,24 @@ async function loadDiscover() {
         }
         var matches = await api("/api/profiles/matches");
         renderMatches(matches);
+        checkMatchNotification();
     } catch (error) {
         if (error.message !== "Sesion requerida") {
             document.getElementById("match-list").textContent = error.message;
         }
+    }
+}
+
+async function checkMatchNotification() {
+    if (!document.getElementById("match-reaction").classList.contains("hidden")) { return; }
+    try {
+        var notification = await api("/api/match-notifications");
+        if (notification.name) {
+            document.getElementById("match-reaction-text").textContent = "Tu y " + notification.name + " tienen interes mutuo.";
+            document.getElementById("match-reaction").classList.remove("hidden");
+        }
+    } catch (error) {
+        // The next interval will retry when the connection is available.
     }
 }
 
@@ -168,3 +182,4 @@ document.getElementById("close-match-reaction").addEventListener("click", functi
 });
 
 loadDiscover();
+window.setInterval(checkMatchNotification, 3000);

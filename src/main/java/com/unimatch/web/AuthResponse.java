@@ -1,5 +1,7 @@
 package com.unimatch.web;
 
+import com.unimatch.web.profiles.ProfileResponse;
+
 public class AuthResponse {
 
     private final ProfileResponse profile;

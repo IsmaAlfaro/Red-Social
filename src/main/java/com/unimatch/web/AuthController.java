@@ -1,6 +1,7 @@
 package com.unimatch.web;
 
 import com.unimatch.security.AccountService;
+import com.unimatch.web.profiles.ProfileUpdateRequest;
 import com.unimatch.audit.AuditService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

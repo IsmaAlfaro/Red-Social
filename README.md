@@ -9,6 +9,25 @@ series, artistas y generos culturales.
 - Spring Boot 2.7
 - Maven
 
+## Estructura Del Codigo
+
+```text
+src/main/java/com/unimatch/
+  audit/       Registro tecnico interno para el programador.
+  config/       Datos iniciales de prueba.
+  domain/       Entidades: perfiles, intereses, likes, rechazos y mensajes.
+  repository/   Acceso a la base de datos con JPA.
+  security/     Inicio de sesion, sesion y proteccion de rutas.
+  web/          API REST y navegacion de la interfaz.
+src/main/resources/
+  templates/    Pantallas: inicio, acceso, descubrir, perfil y mensajes.
+  static/css/   Estilos visuales.
+  static/js/    Comportamiento de cada pantalla.
+```
+
+Para defender el proyecto: `domain` representa los datos, `repository` los
+consulta, `security` protege el acceso y `web` conecta backend e interfaz.
+
 ## Abrir en IntelliJ IDEA
 
 1. Abre IntelliJ IDEA Community.
@@ -76,6 +95,12 @@ Abre `http://localhost:8080/access` para crear una cuenta o iniciar sesion.
 La aplicacion usa H2 en archivo local: `data/unimatch`. Las cuentas, perfiles,
 likes, rechazos y mensajes permanecen despues de reiniciar la aplicacion. La
 carpeta `data/` no se sube al repositorio.
+
+## Auditoria Tecnica
+
+Las acciones de registro, login, logout y actualizacion de perfil se guardan
+en `logs/unimatch.log`. Este archivo es solo para desarrollo y no se muestra a
+los usuarios ni se sube a Git. Nunca registra contrasenas.
 
 La afinidad se calcula como los intereses compartidos entre el total de intereses
 distintos de ambos perfiles. Por ejemplo, si dos perfiles comparten 2 intereses y

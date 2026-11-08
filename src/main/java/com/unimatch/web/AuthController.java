@@ -1,6 +1,7 @@
 package com.unimatch.web;
 
 import com.unimatch.security.AccountService;
+import com.unimatch.audit.AuditService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -28,12 +29,14 @@ public class AuthController {
     private final AccountService accountService;
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
+    private final AuditService auditService;
 
     public AuthController(AccountService accountService, AuthenticationManager authenticationManager,
-                          SecurityContextRepository securityContextRepository) {
+                          SecurityContextRepository securityContextRepository, AuditService auditService) {
         this.accountService = accountService;
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
+        this.auditService = auditService;
     }
 
     @GetMapping("/csrf")
@@ -47,6 +50,7 @@ public class AuthController {
                                  HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         AuthResponse response = accountService.register(request);
         authenticateAndSave(request.getEmail(), request.getPassword(), servletRequest, servletResponse);
+        auditService.record("REGISTER", request.getEmail(), "account-created");
         return response;
     }
 
@@ -56,6 +60,7 @@ public class AuthController {
         Authentication authentication = authenticateAndSave(
                 request.getEmail(), request.getPassword(), servletRequest, servletResponse
         );
+        auditService.record("LOGIN", authentication.getName(), "session-created");
         return accountService.responseFor(authentication.getName());
     }
 
@@ -66,6 +71,7 @@ public class AuthController {
 
     @PutMapping("/me")
     public AuthResponse updateProfile(Authentication authentication, @Valid @RequestBody ProfileUpdateRequest request) {
+        auditService.record("PROFILE_UPDATE", authentication.getName(), "profile-updated");
         return accountService.updateProfile(authentication.getName(), request);
     }
 
@@ -83,6 +89,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(HttpServletRequest request) {
         SecurityContextHolder.clearContext();
+        auditService.record("LOGOUT", "session", "session-closed");
         if (request.getSession(false) != null) {
             request.getSession().invalidate();
         }

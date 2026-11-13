@@ -4,4 +4,5 @@ target/
 data/
 logs/
 uploads/
+data/message.key
 .mvn/wrapper/maven-wrapper.jar

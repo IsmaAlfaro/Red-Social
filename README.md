@@ -25,9 +25,6 @@ src/main/resources/
   static/js/    Comportamiento de cada pantalla.
 ```
 
-Para defender el proyecto: `domain` representa los datos, `repository` los
-consulta, `security` protege el acceso y `web` conecta backend e interfaz.
-
 ## Abrir en IntelliJ IDEA
 
 1. Abre IntelliJ IDEA Community.
@@ -136,10 +133,13 @@ el primer acceso.
 
 Estas son las solicitudes que guiaron las funcionalidades principales:
 
-- Crear una red social universitaria basada en musica, peliculas y compatibilidad.
-- Implementar registro, inicio de sesion y perfiles universitarios.
-- Mostrar perfiles compatibles con botones de interes y pasar.
-- Agregar fotos de perfil, gustos propios y categorias culturales.
-- Crear matches mutuos y mensajeria entre usuarios conectados.
-- Separar la mensajeria en una pantalla propia y permitir ver el perfil desde un chat.
+- Necesito pensar en una red social universitaria basada en musica, peliculas y compatibilidad que me recomedarias hacer?.
+- Pensando, quiero agregarle un metodo de registro, inicio de sesion y perfiles universitarios.
+- Basados en tinder me pdorias explicar como podria mostrar perfiles compatibles con botones de interes y pasar.
+- Para tener un poco mas de personalidad me ayudarias a agregar fotos de perfil, gustos propios y categorias culturales.
+- Podriamos implementar un metodo apra que hayan matches mutuos y mensajeria entre usuarios conectados, tengo en mente un bool, me recomedarias otra funcion nada muy complicado?.
+- Tengo un error sobre un commit me podrias identificar el error?.
+- Como harias la mensajeria en una pantalla propia y permitir ver el perfil desde un chat.
 - Mejorar la interfaz responsive y aplicar paletas visuales definidas para el proyecto.
+- Tuve una equivocacion me base en el uso de DB para este proycto y no podia prodriamos ir viendo como validar los datos en csv de igual manera cambiar la auditoria.
+-

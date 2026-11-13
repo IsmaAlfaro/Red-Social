@@ -15,8 +15,8 @@ series, artistas y generos culturales.
 src/main/java/com/unimatch/
   audit/       Registro tecnico interno para el programador.
   config/       Datos iniciales de prueba.
-  domain/       Entidades: perfiles, intereses, likes, rechazos y mensajes.
-  repository/   Acceso a la base de datos con JPA.
+  domain/       Modelos: perfiles, intereses, likes, rechazos y mensajes.
+  repository/   Persistencia CSV sincronizada.
   security/     Inicio de sesion, sesion y proteccion de rutas.
   web/          API REST y navegacion de la interfaz.
 src/main/resources/
@@ -90,17 +90,37 @@ Abre `http://localhost:8080/access` para crear una cuenta o iniciar sesion.
 - `GET /api/messages/{profileId}`: obtiene la conversacion con un match.
 - `POST /api/messages/{profileId}`: envia un mensaje a un match.
 
-## Persistencia
+## Persistencia CSV
 
-La aplicacion usa H2 en archivo local: `data/unimatch`. Las cuentas, perfiles,
-likes, rechazos y mensajes permanecen despues de reiniciar la aplicacion. La
-carpeta `data/` no se sube al repositorio.
+La aplicacion no usa base de datos, JPA ni H2. Cada repositorio usa archivos CSV
+UTF-8 en `data/`; los archivos se crean al guardar el primer dato. Las escrituras
+estan sincronizadas dentro de la aplicacion y se realizan mediante un archivo
+temporal para evitar archivos parcialmente escritos. Las comillas, comas, barras
+invertidas y saltos de linea se escapan al serializar los campos.
+
+- `data/accounts.csv`: correo, hash BCrypt y perfil de cada cuenta.
+- `data/profiles.csv`: datos de perfil e identificadores de intereses.
+- `data/interests.csv`: catalogo y gustos personalizados.
+- `data/likes.csv`: likes entre perfiles.
+- `data/rejections.csv`: perfiles descartados.
+- `data/match_notifications.csv`: avisos de match y su estado de lectura.
+- `data/hidden_contacts.csv`: contactos ocultos.
+- `data/messages.csv`: mensajes y fecha de envio.
+- `data/audit.csv`: acciones tecnicas sin contrasenas.
+- `uploads/`: fotos de perfil; `profiles.csv` guarda solo la ruta de cada foto.
+
+`CsvStore` centraliza el formato y el bloqueo de lectura/escritura. Los
+repositorios reconstruyen las relaciones por identificador, por lo que los
+controladores y rutas existentes no dependen de una base de datos.
+
+Las fotos nuevas se guardan como `uploads/profile-{id}.jpg` o `.png`. Si un
+perfil antiguo contiene texto Base64 en `profiles.csv`, cambia su foto y guarda
+el perfil una vez para convertirlo a la nueva ruta legible.
 
 ## Auditoria Tecnica
 
-Las acciones de registro, login, logout y actualizacion de perfil se guardan
-en `logs/unimatch.log`. Este archivo es solo para desarrollo y no se muestra a
-los usuarios ni se sube a Git. Nunca registra contrasenas.
+Las acciones de registro, login, logout y actualizacion de perfil se guardan en
+`data/audit.csv`. Nunca registra contrasenas y no se muestra a los usuarios.
 
 La afinidad se calcula como los intereses compartidos entre el total de intereses
 distintos de ambos perfiles. Por ejemplo, si dos perfiles comparten 2 intereses y

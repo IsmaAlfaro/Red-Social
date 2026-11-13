@@ -7,7 +7,6 @@ import com.unimatch.repository.InterestRepository;
 import com.unimatch.repository.StudentProfileRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class SampleDataLoader implements CommandLineRunner {
@@ -21,7 +20,6 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     @Override
-    @Transactional
     public void run(String... args) {
         Interest rock = interest("Rock alternativo", InterestType.MUSIC);
         Interest pop = interest("Pop", InterestType.MUSIC);

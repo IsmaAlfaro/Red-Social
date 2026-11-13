@@ -5,6 +5,7 @@ import com.unimatch.domain.Interest;
 import com.unimatch.domain.UserAccount;
 import com.unimatch.repository.InterestRepository;
 import com.unimatch.repository.UserAccountRepository;
+import com.unimatch.repository.StudentProfileRepository;
 import com.unimatch.web.auth.AuthResponse;
 import com.unimatch.web.profiles.ProfileResponse;
 import com.unimatch.web.auth.RegistrationRequest;
@@ -16,7 +17,6 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -24,16 +24,17 @@ public class AccountService {
 
     private final UserAccountRepository accountRepository;
     private final InterestRepository interestRepository;
+    private final StudentProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AccountService(UserAccountRepository accountRepository, InterestRepository interestRepository,
+    public AccountService(UserAccountRepository accountRepository, InterestRepository interestRepository, StudentProfileRepository profileRepository,
                           PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.interestRepository = interestRepository;
+        this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
     public AuthResponse register(RegistrationRequest request) {
         String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
         if (accountRepository.existsByEmail(email)) {
@@ -50,23 +51,19 @@ public class AccountService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Hay intereses no validos");
         }
         interests.forEach(profile::addInterest);
-        UserAccount account = new UserAccount(email, passwordEncoder.encode(request.getPassword()), profile);
-        accountRepository.save(account);
+        UserAccount account = accountRepository.save(new UserAccount(email, passwordEncoder.encode(request.getPassword()), profile));
         return new AuthResponse(ProfileResponse.from(account.getProfile()));
     }
 
-    @Transactional(readOnly = true)
     public AuthResponse responseFor(String email) {
         UserAccount account = accountFor(email);
         return new AuthResponse(ProfileResponse.from(account.getProfile()));
     }
 
-    @Transactional(readOnly = true)
     public StudentProfile currentProfile(String email) {
         return accountFor(email).getProfile();
     }
 
-    @Transactional
     public AuthResponse updateProfile(String email, ProfileUpdateRequest request) {
         StudentProfile profile = accountFor(email).getProfile();
         Set<Long> ids = new HashSet<Long>(request.getInterestIds());
@@ -78,6 +75,7 @@ public class AccountService {
         if (request.getProfileImage() != null) {
             profile.setProfileImage(request.getProfileImage());
         }
+        profileRepository.save(profile);
         return new AuthResponse(ProfileResponse.from(profile));
     }
 

@@ -19,6 +19,7 @@ public class AccountUserDetailsService implements UserDetailsService {
         this.accountRepository = accountRepository;
     }
 
+    /** Busca la cuenta normalizando el correo y la adapta para la autenticacion de Spring Security. */
     @Override
     public UserDetails loadUserByUsername(String email) {
         UserAccount account = accountRepository.findByEmail(email.trim().toLowerCase(Locale.ROOT))

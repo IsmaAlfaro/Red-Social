@@ -26,6 +26,7 @@ public class StudentProfile {
         this.id = id;
     }
 
+    /** Incorpora un interes al conjunto del perfil, sin duplicarlo. */
     public void addInterest(Interest interest) {
         interests.add(interest);
     }
@@ -34,6 +35,7 @@ public class StudentProfile {
         this.profileImage = profileImage;
     }
 
+    /** Sustituye los datos editables y el conjunto completo de intereses del perfil. */
     public void update(String name, String degree, String bio, Set<Interest> interests) {
         this.name = name;
         this.degree = degree;

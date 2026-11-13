@@ -35,6 +35,7 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /** Registra una cuenta con perfil e intereses validados, rechazando correos duplicados. */
     public AuthResponse register(RegistrationRequest request) {
         String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
         if (accountRepository.existsByEmail(email)) {
@@ -55,15 +56,18 @@ public class AccountService {
         return new AuthResponse(ProfileResponse.from(account.getProfile()));
     }
 
+    /** Construye la respuesta de autenticacion para la cuenta identificada por el correo. */
     public AuthResponse responseFor(String email) {
         UserAccount account = accountFor(email);
         return new AuthResponse(ProfileResponse.from(account.getProfile()));
     }
 
+    /** Obtiene el perfil asociado a la cuenta autenticada por su correo. */
     public StudentProfile currentProfile(String email) {
         return accountFor(email).getProfile();
     }
 
+    /** Actualiza los datos editables e intereses del perfil tras validar sus identificadores. */
     public AuthResponse updateProfile(String email, ProfileUpdateRequest request) {
         StudentProfile profile = accountFor(email).getProfile();
         Set<Long> ids = new HashSet<Long>(request.getInterestIds());
@@ -79,6 +83,7 @@ public class AccountService {
         return new AuthResponse(ProfileResponse.from(profile));
     }
 
+    /** Busca una cuenta por correo o responde como no autenticado si no existe. */
     private UserAccount accountFor(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));

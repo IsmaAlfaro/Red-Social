@@ -19,6 +19,7 @@ public class SampleDataLoader implements CommandLineRunner {
         this.profileRepository = profileRepository;
     }
 
+    /** Crea intereses base y perfiles de ejemplo cuando aun no hay perfiles almacenados. */
     @Override
     public void run(String... args) {
         Interest rock = interest("Rock alternativo", InterestType.MUSIC);
@@ -58,6 +59,7 @@ public class SampleDataLoader implements CommandLineRunner {
         profileRepository.save(mateo);
     }
 
+    /** Obtiene un interes por nombre o lo crea con el tipo indicado si no existe. */
     private Interest interest(String name, InterestType type) {
         return interestRepository.findByName(name)
                 .orElseGet(() -> interestRepository.save(new Interest(name, type)));

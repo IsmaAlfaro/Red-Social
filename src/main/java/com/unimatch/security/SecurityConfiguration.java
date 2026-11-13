@@ -26,21 +26,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    /** Proporciona el codificador BCrypt usado para almacenar y comprobar contrasenas. */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /** Mantiene el contexto de seguridad dentro de la sesion HTTP. */
     @Bean
     public SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
     }
 
+    /** Vincula la autenticacion a las cuentas persistidas y al codificador de contrasenas. */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /** Define CSRF, rutas publicas y la respuesta ante accesos no autenticados. */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -74,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 });
     }
 
+    /** Expone el gestor de autenticacion para los inicios de sesion programaticos. */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

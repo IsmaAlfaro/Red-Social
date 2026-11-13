@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso | UniMatch</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<main class="access-page">
+    <a class="back-link" href="/">UniMatch</a>
+    <section class="access-card">
+        <p class="eyebrow">COMUNIDAD UNIVERSITARIA</p>
+        <h1>Tu proxima conexion empieza con tus gustos.</h1>
+        <div class="tabs">
+            <button class="tab active" data-form="login-form" type="button">Iniciar sesion</button>
+            <button class="tab" data-form="register-form" type="button">Crear cuenta</button>
+        </div>
+        <form id="login-form" class="auth-form">
+            <label>Correo universitario<input name="email" type="email" required></label>
+            <label>Contrasena<input name="password" type="password" minlength="8" required></label>
+            <button class="button" type="submit">Entrar</button>
+        </form>
+        <form id="register-form" class="auth-form hidden">
+            <label>Nombre<input name="name" required></label>
+            <label>Correo universitario<input name="email" type="email" required></label>
+            <label>Contrasena<input name="password" type="password" minlength="8" required></label>
+            <label>Carrera<input name="degree" required></label>
+            <div class="profile-photo-editor register-photo"><img id="profile-image-preview" class="profile-photo-preview hidden" alt="Vista previa de tu foto de perfil"><span id="register-photo-placeholder" class="profile-photo-placeholder">+</span><label class="profile-photo-action" for="profile-image-input">Agregar foto</label><input id="profile-image-input" name="profileImageFile" type="file" accept="image/png, image/jpeg" class="hidden"></div>
+            <label>Bio<textarea name="bio" maxlength="280" placeholder="Cuentanos que buscas en UniMatch"></textarea></label>
+            <fieldset class="interest-picker">
+                <legend>Elige al menos un gusto</legend>
+                <div id="interest-list" class="interest-list">Cargando intereses...</div>
+            </fieldset>
+            <div class="custom-interest"><strong>Agrega un gusto propio</strong><input id="register-interest-name" placeholder="Pelicula, artista o genero"><select id="register-interest-type"><option value="MOVIE">Pelicula</option><option value="ARTIST">Artista</option><option value="MUSIC_GENRE">Genero musical</option><option value="MOVIE_GENRE">Genero de cine</option><option value="SERIES">Serie</option></select><button id="register-add-interest" type="button">Agregar</button></div>
+            <button class="button" type="submit">Crear cuenta</button>
+        </form>
+        <p id="auth-message" class="auth-message" aria-live="polite"></p>
+    </section>
+</main>
+<script src="/js/access.js"></script>
+</body>
+</html>

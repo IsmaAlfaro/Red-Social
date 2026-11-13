@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubrir | UniMatch</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<main class="discover-page">
+    <header class="discover-header">
+        <a class="brand" href="/">UniMatch</a>
+        <a class="current-user" href="/profile">
+            <img id="current-user-image" class="current-user-image hidden" alt="Tu foto de perfil">
+            <span id="current-user-initial" class="current-user-initial">?</span>
+            <span id="current-user-name">Mi perfil</span>
+        </a>
+        <button id="logout-button" class="text-button" type="button">Cerrar sesion</button>
+    </header>
+    <a class="message-bubble" href="/messages" aria-label="Abrir mensajes" title="Mensajes"><span>...</span></a>
+    <div id="match-reaction" class="match-reaction hidden"><div><p class="eyebrow">UNIMATCH</p><h2>Es un match</h2><p id="match-reaction-text"></p><a class="button" href="/messages">Abrir mensajes</a><button id="close-match-reaction" type="button">Seguir descubriendo</button></div></div>
+    <section id="match-list" class="match-list" aria-live="polite"></section>
+</main>
+<script src="/js/discover.js"></script>
+</body>
+</html>
